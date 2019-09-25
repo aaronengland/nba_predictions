@@ -4,6 +4,8 @@ A package for scraping the user-defined NFL season's schedule/results and simula
 
 To install, use: `pip install git+https://github.com/aaronengland/nba_predictions.git`
 
+---
+
 ## nba_pickem
 
 Arguments:
