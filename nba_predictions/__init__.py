@@ -57,7 +57,8 @@ def scrape_schedule(year):
                        'away_team': list_away_team,
                        'home_points': list_home_score,
                        'away_points': list_away_score})
-
+    # return the df
+    return df
 
 # define function for upcoming month predictions
 def nba_pickem(year, weighted_mean=False, n_simulations=1000):
