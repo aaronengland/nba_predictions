@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from game_predictions import game_predictions
 
-# define function for scraping nfl schedule/results
+# define function for scraping nba schedule/results
 def scrape_schedule(year):
     # create list of momths
     list_months = ['october','november','december','jauary','february','march','april','may','june']
