@@ -300,6 +300,8 @@ def nba_season_simulation(df, dict_best_hyperparameters, n_simulations=1000):
     # join df_unique_teams and df_nba_teams_conferences
     df_unique_teams_w_conf = pd.merge(left=df_unique_teams, right=df_nba_teams_conferences,
                                       left_on='team', right_on='Team', how='left')
+    # drop Team col
+    df_unique_teams_w_conf.drop(['Team'], axis=1, inplace=True)
     
     # get west
     df_west = df_unique_teams_w_conf[df_unique_teams_w_conf['Conference'] == 'West'].reset_index(drop=True)
@@ -308,7 +310,7 @@ def nba_season_simulation(df, dict_best_hyperparameters, n_simulations=1000):
     
     # create dictionary for which to return
     results = {'simulated_season': df_final,
-               'final_win_predictions': df_unique_teams_w_conf,
+               'final_win_predictions_w_conf': df_unique_teams_w_conf,
                'west': df_west,
                'east': df_east}
     
