@@ -71,7 +71,7 @@ def scrape_schedule(year):
     return df
 
 # define function for tuning hyperparameters
-def tune_hyperparameters(df,list_outer_weighted_mean, list_distributions, list_inner_weighted_mean, list_weight_home, list_weight_away, train_size=.66, n_simulations=1000):
+def tune_hyperparameters(df, list_outer_weighted_mean, list_distributions, list_inner_weighted_mean, list_weight_home, list_weight_away, train_size=.66, n_simulations=1000):
     # drop the unplayed games
     df_played = df.dropna(subset=['home_points'])
     
