@@ -317,6 +317,36 @@ def nba_season_simulation(df, dict_best_hyperparameters, n_simulations=1000):
     # return results
     return results
 
+# postseason probabilities
+def nba_postseason_probabilities(df, dict_best_hyperparameters, n_simulations=1000):
+    # get df with all teams
+    df_unique_teams = pd.DataFrame({'team': pd.unique(df['home_team'])})
+    
+    # loop through n_simulations
+    for i in range(n_simulations):
+        # simulate season
+        season_simulation = nba_season_simulation(df=df,
+                                                  dict_best_hyperparameters=dict_best_hyperparameters,
+                                                  n_simulations=1)
+        # get top 8 teams in western conference
+        list_playoffs_west = season_simulation.get('west')[:8]['team'].to_list()
+        # get top 8 teams in eastern conference
+        list_playoffs_east = season_simulation.get('east')[:8]['team'].to_list()
+        # combine both lists
+        list_playoffs_nba = list_playoffs_west + list_playoffs_east
+        
+        # mark each row as 1 if in playoffs_nba
+        df_unique_teams['sim_{}'.format(i)] = df_unique_teams.apply(lambda x: 1 if x['team'] in list_playoffs_nba else 0, axis=1)
+    
+    # get mean across rows
+    df_postseason_prob = pd.DataFrame({'team': df_unique_teams['team'],
+                                       'prob_postseason': df_unique_teams.mean(axis=1)})
+    
+    # sort descending
+    df_final = df_postseason_prob.sort_values(by=['prob_postseason'], ascending=False)
+    
+    # return df_final
+    return df_final
 
 
 
