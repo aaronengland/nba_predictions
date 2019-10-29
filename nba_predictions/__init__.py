@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from game_predictions import game_predictions
 
-# define function for scraping nba schedule/results
+# define function for scraping schedule and results
 def scrape_schedule(year):
     # create list of momths
     list_months = ['october','november','december','jauary','february','march','april','may','june']
@@ -40,6 +40,9 @@ def scrape_schedule(year):
                     list_away_team.append(away_team)
                     # get away_score
                     away_score = columns[2].text
+                    # for empty strings
+                    if away_score == '':
+                        away_score = np.nan
                     # append to list_away_score
                     list_away_score.append(away_score)
                     # get home team
@@ -48,6 +51,9 @@ def scrape_schedule(year):
                     list_home_team.append(home_team)
                     # get home score
                     home_score = columns[4].text
+                    # for empty strings
+                    if home_score == '':
+                        home_score = np.nan
                     # append to list_home_score
                     list_home_score.append(home_score)
             
