@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
+import datetime
 from game_predictions import game_predictions
 
 # define function for scraping schedule and results
