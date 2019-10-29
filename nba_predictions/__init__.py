@@ -6,6 +6,60 @@ import pandas as pd
 import numpy as np
 from game_predictions import game_predictions
 
+# define function for scraping nfl schedule/results
+def scrape_schedule(year):
+    # create list of momths
+    list_months = ['october','november','december','jauary','february','march','april','may','june']
+    # instantiate lists
+    list_month = []
+    list_away_team = []
+    list_away_score = []
+    list_home_team = []
+    list_home_score = []
+    # get rows for each momth
+    for month in list_months:
+        # get url
+        r = requests.get('https://www.basketball-reference.com/leagues/NBA_{0}_games-{1}.html'.format(year, month))
+        # get content of page
+        soup = BeautifulSoup(r.content, 'html.parser')
+        # get the schedule table
+        table = soup.find('table', id='schedule')
+        if table:
+            # get all table rows
+            table_rows = table.find_all('tr')
+            # get columns
+            for row in table_rows:
+                # get columns (i.e., td)
+                columns = row.find_all('td')
+                # if columns is not an empty list
+                if columns:
+                    # append month to list_month
+                    list_month.append(month)
+                    # get away team
+                    away_team = columns[1].text
+                    # append to list_away_team
+                    list_away_team.append(away_team)
+                    # get away_score
+                    away_score = columns[2].text
+                    # append to list_away_score
+                    list_away_score.append(away_score)
+                    # get home team
+                    home_team = columns[3].text
+                    # append to list_home_team
+                    list_home_team.append(home_team)
+                    # get home score
+                    home_score = columns[4].text
+                    # append to list_home_score
+                    list_home_score.append(home_score)
+            
+    # put into df
+    df = pd.DataFrame({'month': list_month,
+                       'home_team': list_home_team,
+                       'away_team': list_away_team,
+                       'home_points': list_home_score,
+                       'away_points': list_away_score})
+
+
 # define function for upcoming month predictions
 def nba_pickem(year, weighted_mean=False, n_simulations=1000):
     # create list of momths
