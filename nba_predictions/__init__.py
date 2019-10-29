@@ -43,6 +43,8 @@ def scrape_schedule(year):
                     # for empty strings
                     if away_score == '':
                         away_score = np.nan
+                    else:
+                        away_score = int(away_score)
                     # append to list_away_score
                     list_away_score.append(away_score)
                     # get home team
@@ -54,6 +56,8 @@ def scrape_schedule(year):
                     # for empty strings
                     if home_score == '':
                         home_score = np.nan
+                    else:
+                        home_score = int(home_score)
                     # append to list_home_score
                     list_home_score.append(home_score)
             
