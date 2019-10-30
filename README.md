@@ -1,66 +1,45 @@
 # nba_predictions
 
-A package for scraping the user-defined NFL season's schedule/results and simulating the upcoming week's games (`nfl_pickem`) and the unplayed games for the entire season (`nfl_season_simulation`) using the `game_predictions` algorithm.
+A package for scraping the user-defined NBA season's schedule/results from [here](https://www.basketball-reference.com/leagues/NBA_2020_games.html), tuning the model's hyperparameters on a user-defined proportion of the completed contests (`tune_hyperparameters`), simulating the entire season (`nba_season_simulation`), and generating postseason probabilities (`nba_postseason_probabilities`) using the [`game_predictions`](https://github.com/aaronengland/game_predictions/blob/master/README.md) algorithm.
 
 To install, use: `pip install git+https://github.com/aaronengland/nba_predictions.git`
 
 ---
 
-## nba_pickem
-
-Arguments:
-- `year`: season to simulate.
-- `weighted_mean`: use of weighted mean in simulation (boolean; default=False; False is recommended for early in the season while True is recommended for later games).
-- `n_simulations`: number of simulations for each game (default=1000).
-
-Returns a data frame with predicted results for the upcoming month's games.
-
 Example:
 
 ```
-from nba_predictions import nba_pickem
+from nba_predictions import scrape_schedule, tune_hyperparameters, nba_season_simulation, nba_postseason_probabilities
 
-# simulate upcoming month
-upcoming_month_simulation = nfl_pickem(year=2019, weighted_mean=False, n_simulations=1000)
+# get simulations
+n_simulations=1000
 
-# view results
-upcoming_month_simulation
-```
+# get schedule and results
+df = scrape_schedule(year=2020)
 
----
+# tune hyperparameters
+hyperparams_tuned = tune_hyperparameters(df=df, 
+                                         list_outer_weighted_mean = ['all_games_weighted','none','time','opp_win_pct'],
+                                         list_distributions = ['poisson','normal'],
+                                         list_inner_weighted_mean = ['none','win_pct'],
+                                         list_weight_home = [1,2,3,4,5,6,7,8,9,10],
+                                         list_weight_away = [1,2,3,4,5,6,7,8,9,10],
+                                         train_size = .9,
+                                         n_simulations=n_simulations)
 
-## nba_season_simulation
-
-Arguments:
-- `year`: season to simulate.
-- `weighted_mean`: use of weighted mean in simulation (boolean; default=False; False is recommended for early in the season while True is recommended for later games).
-- `n_simulations`: number of simulations for each game (default=1000).
-
-Attributes:
-- `df_simulated_season`: data frame of all played and simulated games in season.
-- `df_final_win_predictions_conf`: data frame of predicted wins.
-- `df_east`: data frame of predicted wins (Eastern conference only).
-- `df_west`: data frame of predicted wins (Western conference only).
-
-Example:
-
-```
-from nba_predictions import nba_season_simulation
+# get the best hyperparameters
+dict_best_hyperparameters = hyperparams_tuned.get('dict_best_hyperparameters')
 
 # simulate season
-simulated_season = nba_season_simulation(year=2019, weighted_mean=False, n_simulations=1000)
+season_simulation = nba_season_simulation(df=df,
+                                          dict_best_hyperparameters=dict_best_hyperparameters,
+                                          n_simulations=n_simulations)
 
-# get simulated season
-df_entire_season = simulated_season.df_simulated_season
+# get the final win totals
+win_totals = season_simulation.get('final_win_predictions_w_conf')
 
-# get final win predictions
-df_standings = simulated_season.df_final_win_predictions_conf
-
-# get eastern conference
-df_east_standings = simulated_season.df_east
-
-# get western conference
-df_west_standings = simulated_season.df_west
+# define function for postseason probabilities
+postseason_prob = nba_postseason_probabilities(df=df, 
+                                               dict_best_hyperparameters=dict_best_hyperparameters,
+                                               n_simulations=n_simulations)
 ```
-
----
