@@ -73,6 +73,9 @@ def scrape_schedule(year):
 
 # define function for tuning hyperparameters
 def tune_hyperparameters(df, list_outer_weighted_mean, list_distributions, list_inner_weighted_mean, list_weight_home, list_weight_away, train_size=.66, n_simulations=1000):
+    # suppress the SettingWithCopyWarning
+    pd.options.mode.chained_assignment = None
+    
     # drop the unplayed games
     df_played = df.dropna(subset=['home_points'])
     
