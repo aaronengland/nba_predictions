@@ -85,7 +85,7 @@ def scrape_nba_schedule(year):
     return df
 
 # define function for tuning hyperparameters
-def tune_nba_hyperparameters(df, list_outer_weighted_mean, list_distributions, list_inner_weighted_mean, list_weight_home, list_weight_away, train_size=.66, n_simulations=1000):
+def tune_nba_hyperparameters(df, list_central_tendency, list_distributions, list_inner_weighted_mean, list_weight_home, list_weight_away, train_size=.66, n_simulations=1000):
     # suppress the SettingWithCopyWarning
     pd.options.mode.chained_assignment = None
     # drop the unplayed games
