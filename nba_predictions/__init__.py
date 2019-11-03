@@ -89,9 +89,9 @@ def tune_nba_hyperparameters(df, list_central_tendency, list_distributions, list
     # suppress the SettingWithCopyWarning
     pd.options.mode.chained_assignment = None
     # drop the unplayed games
-    df_played = df.dropna(subset=['home_points'])
+    df_played = df.dropna(subset=['home_score'])
     # calculate spread
-    df_played['spread'] = df_played['home_points'] - df_played['away_points']
+    df_played['spread'] = df_played['home_score'] - df_played['away_score']
     
     # get the number of rows in train size
     nrows = df_played.shape[0]
