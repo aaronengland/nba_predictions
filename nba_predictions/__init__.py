@@ -191,9 +191,9 @@ def tune_nba_hyperparameters(df, list_central_tendency, list_distributions, list
 # simulate season
 def simulate_nba_season(df, dict_best_hyperparameters, n_simulations=1000):        
     # drop the unplayed games
-    df_played = df.dropna(subset=['home_points'])
+    df_played = df.dropna(subset=['home_score'])
     # get the unplayed games
-    df_unplayed = df[pd.isnull(df['home_points'])]
+    df_unplayed = df[pd.isnull(df['home_score'])]
     
     # simulate each game with best hyperparameters
     df_unplayed['pred_outcome'] = df_unplayed.apply(lambda x: game_predictions(df=df_played, 
