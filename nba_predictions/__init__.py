@@ -7,7 +7,7 @@ import datetime
 from game_predictions import game_predictions
 
 # define function for scraping schedule and results
-def scrape_schedule(year):
+def scrape_nba_schedule(year):
     # create list of momths
     list_months = ['october','november','december','jauary','february','march','april','may','june']
     # instantiate lists
