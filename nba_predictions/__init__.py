@@ -66,8 +66,12 @@ def scrape_nba_schedule(year):
     df = pd.DataFrame({'month': list_month,
                        'home_team': list_home_team,
                        'away_team': list_away_team,
-                       'home_points': list_home_score,
-                       'away_points': list_away_score})
+                       'home_score': list_home_score,
+                       'away_score': list_away_score})
+    
+    # create winning team col
+    df['winning_team'] = df.apply(lambda x: x['home_team'] if x['home_score'] > x['away_score'] else x['away_team'], axis=1)
+    
     # return the df
     return df
 
