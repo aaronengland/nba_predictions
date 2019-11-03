@@ -207,15 +207,15 @@ def simulate_nba_season(df, dict_best_hyperparameters, n_simulations=1000):
                                                                                n_simulations=n_simulations), axis=1)
     
     # put into df_unplayed
-    df_unplayed['home_points'] = df_unplayed.apply(lambda x: x['pred_outcome'].get('mean_home_pts'), axis=1)
-    df_unplayed['away_points'] = df_unplayed.apply(lambda x: x['pred_outcome'].get('mean_away_pts'), axis=1)
+    df_unplayed['home_score'] = df_unplayed.apply(lambda x: x['pred_outcome'].get('mean_home_pts'), axis=1)
+    df_unplayed['away_score'] = df_unplayed.apply(lambda x: x['pred_outcome'].get('mean_away_pts'), axis=1)
     df_unplayed['winning_team'] = df_unplayed.apply(lambda x: x['pred_outcome'].get('winning_team'), axis=1)
     
     # drop pred_outcome
     df_unplayed.drop(['pred_outcome'], axis=1, inplace=True)
     
     # append df_played and df_unplayed
-    df_final = pd.concat([df_played, df_unplayed],ignore_index=True)
+    df_final = pd.concat([df_played, df_unplayed], ignore_index=True)
     
     # get number of wins for each team
     df_unique_teams = pd.DataFrame({'team': pd.unique(df_final['home_team'])})
