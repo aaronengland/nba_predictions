@@ -189,23 +189,17 @@ def tune_nba_hyperparameters(df, list_central_tendency, list_distributions, list
     return dict_results
 
 # simulate season
-def simulate_nba_season(df, dict_best_hyperparameters, n_simulations=1000):
-    # get winning team
-    df['winning_team'] = df.apply(lambda x: x['home_team'] if x['home_points'] > x['away_points'] else x['away_team'], axis=1)  
-        
+def simulate_nba_season(df, dict_best_hyperparameters, n_simulations=1000):        
     # drop the unplayed games
     df_played = df.dropna(subset=['home_points'])
     # get the unplayed games
     df_unplayed = df[pd.isnull(df['home_points'])]
     
     # simulate each game with best hyperparameters
-    df_unplayed['pred_outcome'] = df_unplayed.apply(lambda x: game_predictions(home_team_array=df_played['home_team'], 
-                                                                               home_score_array=df_played['home_points'], 
-                                                                               away_team_array=df_played['away_team'], 
-                                                                               away_score_array=df_played['away_points'], 
+    df_unplayed['pred_outcome'] = df_unplayed.apply(lambda x: game_predictions(df=df_played, 
                                                                                home_team=x['home_team'], 
                                                                                away_team=x['away_team'], 
-                                                                               outer_weighted_mean=dict_best_hyperparameters.get('outer_weighted_mean'), 
+                                                                               central_tendency=dict_best_hyperparameters.get('central_tendency'),
                                                                                distribution=dict_best_hyperparameters.get('distribution'),
                                                                                inner_weighted_mean=dict_best_hyperparameters.get('inner_weighted_mean'), 
                                                                                weight_home=dict_best_hyperparameters.get('weight_home'),
