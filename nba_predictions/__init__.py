@@ -69,8 +69,17 @@ def scrape_nba_schedule(year):
                        'home_score': list_home_score,
                        'away_score': list_away_score})
     
+    # define function for winning team
+    def get_winner(home_team, away_team, home_score, away_score):
+        if home_score > away_score:
+            return home_team
+        elif home_score < away_score:
+            return away_team
+        else:
+            return np.nan
+    
     # create winning team col
-    df['winning_team'] = df.apply(lambda x: x['home_team'] if x['home_score'] > x['away_score'] else x['away_team'], axis=1)
+    df['winning_team'] = df.apply(lambda x: get_winner(home_team=x['home_team'], away_team=x['away_team'], home_score=x['home_score'], away_score=x['away_score']), axis=1)
     
     # return the df
     return df
