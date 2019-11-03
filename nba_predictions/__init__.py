@@ -72,7 +72,7 @@ def scrape_nba_schedule(year):
     return df
 
 # define function for tuning hyperparameters
-def tune_hyperparameters(df, list_outer_weighted_mean, list_distributions, list_inner_weighted_mean, list_weight_home, list_weight_away, train_size=.66, n_simulations=1000):
+def tune_nba_hyperparameters(df, list_outer_weighted_mean, list_distributions, list_inner_weighted_mean, list_weight_home, list_weight_away, train_size=.66, n_simulations=1000):
     # suppress the SettingWithCopyWarning
     pd.options.mode.chained_assignment = None
     
@@ -243,7 +243,7 @@ def tune_hyperparameters(df, list_outer_weighted_mean, list_distributions, list_
     return dict_results
 
 # simulate season
-def nba_season_simulation(df, dict_best_hyperparameters, n_simulations=1000):
+def simulate_nba_season(df, dict_best_hyperparameters, n_simulations=1000):
     # get winning team
     df['winning_team'] = df.apply(lambda x: x['home_team'] if x['home_points'] > x['away_points'] else x['away_team'], axis=1)  
         
