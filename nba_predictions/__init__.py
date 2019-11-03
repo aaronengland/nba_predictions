@@ -268,9 +268,9 @@ def nba_postseason_probabilities(df, dict_best_hyperparameters, n_simulations=10
     # loop through n_simulations
     for i in range(n_simulations):
         # simulate season
-        season_simulation = nba_season_simulation(df=df,
-                                                  dict_best_hyperparameters=dict_best_hyperparameters,
-                                                  n_simulations=1)
+        season_simulation = simulate_nba_season(df=df,
+                                                dict_best_hyperparameters=dict_best_hyperparameters,
+                                                n_simulations=1)
         # get top 8 teams in western conference
         list_playoffs_west = season_simulation.get('west')[:8]['team'].to_list()
         # get top 8 teams in eastern conference
