@@ -19,6 +19,7 @@ df = scrape_nba_schedule(year=2020)
 
 # tune hyperparameters
 hyperparams_tuned = tune_nba_hyperparameters(df=df, 
+                                             list_last_n_games=[1,2,3,4,5,'all'],
                                              list_central_tendency=['mean','median'],
                                              list_distributions = ['poisson','normal'],
                                              list_inner_weighted_mean = ['none','win_pct'],
