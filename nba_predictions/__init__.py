@@ -202,13 +202,14 @@ def simulate_nba_season(df, dict_best_hyperparameters, n_simulations=1000):
     df_unplayed = df[pd.isnull(df['home_score'])]
     
     # simulate each game with best hyperparameters
-    df_unplayed['pred_outcome'] = df_unplayed.apply(lambda x: game_predictions(df=df_played, 
+    df_unplayed['pred_outcome'] = df_unplayed.apply(lambda x: game_predictions(df=df_data, 
                                                                                home_team=x['home_team'], 
                                                                                away_team=x['away_team'], 
                                                                                last_n_games=dict_best_hyperparameters.get('last_n_games'),
+                                                                               outer_opp_win_pct=dict_best_hyperparameters.get('outer_opp_win_pct'),
                                                                                central_tendency=dict_best_hyperparameters.get('central_tendency'),
                                                                                distribution=dict_best_hyperparameters.get('distribution'),
-                                                                               inner_weighted_mean=dict_best_hyperparameters.get('inner_weighted_mean'), 
+                                                                               inner_opp_win_pct=dict_best_hyperparameters.get('inner_opp_win_pct'),
                                                                                weight_home=dict_best_hyperparameters.get('weight_home'),
                                                                                weight_away=dict_best_hyperparameters.get('weight_away'),
                                                                                n_simulations=n_simulations), axis=1)
